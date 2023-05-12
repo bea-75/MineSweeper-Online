@@ -7,5 +7,18 @@
 }
 
 .pfp {
-  border-radius: 50%;
+	border-radius: 50%;
+}
+
+span {
+	display: inline;
+	width: 100px;
+	height: 100px;
+	padding: 16px;
+	background-color: #44ad45; 
+}
+
+.check {
+	background-color: #00ff00;
+	color: white;
 }
