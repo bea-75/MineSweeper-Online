@@ -18,7 +18,24 @@ span {
 	background-color: #44ad45; 
 }
 
+.block {
+	width: 45px;
+	height: 50px;
+	padding: 0px;
+}
+
 .check {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
 	background-color: #00ff00;
-	color: white;
+	color: #00ff00;
+}
+
+.destroyed {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ebdfc3;
+	color: #ebdfc3;
 }
