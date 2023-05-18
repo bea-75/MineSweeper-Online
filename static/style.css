@@ -39,3 +39,31 @@ span {
 	background-color: #ebdfc3;
 	color: #ebdfc3;
 }
+
+.exploded {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ff0000;
+	color: #ff0000;
+}
+
+.correct {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #00e016;
+	color: #00e016;
+}
+
+.wrong {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ffd900;
+	color: #ffd900;
+}
+
+.play {
+	background-color: #44ad45;
+}

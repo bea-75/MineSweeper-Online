@@ -54,6 +54,16 @@ def inject_logged_in():
 def flagHTML():
     flag = "<h2>&#128681;</h2>"
     return flag
+    
+@app.route('/unflag')
+def unflagHTML():
+    unflag = ".."
+    return unflag
+    
+@app.route('/bomb')
+def bombHTML():
+    bomb = "<h2>&#128163;</h2>"
+    return bomb
 
 @app.route('/')
 def home():
