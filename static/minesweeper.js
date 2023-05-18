@@ -74,6 +74,7 @@ $(document).ready(function() {
 		}
 		else if ($('button').hasClass('check')) {
 			$('.check').addClass("destroyed");
+			$('.check').load("bombNum");
 			$('.check').removeClass("check");
 			checked = false;
 		} 

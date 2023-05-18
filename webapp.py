@@ -50,6 +50,11 @@ print("connected to db")
 def inject_logged_in():
     return {"logged_in":('github_token' in session)}
 
+@app.route('/bombNum')
+def bombNum():
+    num = '<b>5</b>'
+    return num
+
 @app.route('/flag')
 def flagHTML():
     flag = "<h2>&#128681;</h2>"
