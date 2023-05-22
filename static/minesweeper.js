@@ -64,12 +64,12 @@ $(document).ready(function() {
 			$(".bomb").removeClass("text-success");
 			$('.bomb').addClass('exploded');
 			if ($('.bomb').hasClass('flagged-right')) {
-				$(".flagged-right").addClass("correct");
 				$(".flagged-right").load('flag')
+				$(".flagged-right").addClass("correct");
 			}	
 			if ($(".block").hasClass("flagged-wrong")) {
-				$(".flagged-wrong").addClass("wrong");
 				$(".flagged-wrong").load('flag')
+				$(".flagged-wrong").addClass("wrong");
 			}
 		}
 		else if ($('button').hasClass('check')) {

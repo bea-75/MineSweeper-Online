@@ -43,12 +43,36 @@ collection = db['Profiles'] #TODO: put the name of the collection here
 
 print("connected to db")
 
+bombLayout = [[0, -1, 0, 0, -1, 0, 0],
+        [0, 0, -1, 0, 0, 0, -1],
+        [0, 0, -1, 0, -1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, -1],
+        [0, -1, 0, -1, 0, -1, 0],
+        [0, 0, -1, 0, 0, 0, 0],
+        [0, 0, -1, 0, -1, 0, 0],
+        [0, -1, 0, -1, 0, -1, 0]]
+        
+numLayout = []
+
+gameHtml = []
+
 #context processors run before templates are rendered and add variable(s) to the template's context
 #context processors must return a dictionary 
 #this context processor adds the variable logged_in to the conext for all templates
 @app.context_processor
 def inject_logged_in():
     return {"logged_in":('github_token' in session)}
+
+def create_layout():
+    for x in range(len(bombLayout)):
+        for y in range(len(bombLayout[x])):
+            if bombLayout[x][y] == -1:
+                gameHtml.append('<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>\n')
+            else:
+                gameHtml.append('<button type="button" class="btn btn-lg btn-success text-success block"></button>')
+    return gameHtml
+        
+
 
 @app.route('/bombNum')
 def bombNum():
@@ -72,6 +96,7 @@ def bombHTML():
 
 @app.route('/')
 def home():
+    print(create_layout())
     return render_template('home.html')
 
 #redirect to GitHub's OAuth page and confirm callback URL
