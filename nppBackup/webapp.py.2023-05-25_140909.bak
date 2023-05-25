@@ -72,11 +72,11 @@ def create_layout(numLayout):
             gameHtml = gameHtml + Markup('</span>\n<br>\n<span>')
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success text-success block bomb"></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>\n')
             elif numLayout[x][y] == 0:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn btn-lg btn-success block"></button>\n')
             else:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
                 
     gameHtml = gameHtml + Markup('</span>\n<br>')
     return gameHtml

@@ -44,13 +44,13 @@ collection = db['Profiles'] #TODO: put the name of the collection here
 print("connected to db")
 
 bombLayout = [[0, -1, 0, 0, -1, 0, 0],
-            [0, 0, 0, 0, 0, 0, -1],
-            [0, 0, -1, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, -1],
-            [0, 0, 0, 0, 0, -1, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, -1, 0, 0, 0, 0],
-            [0, -1, 0, 0, 0, 0, 0]]
+        [0, 0, -1, 0, 0, 0, -1],
+        [0, 0, -1, 0, -1, 0, 0],
+        [0, 0, 0, 0, 0, 0, -1],
+        [0, -1, 0, -1, 0, -1, 0],
+        [0, 0, -1, 0, 0, 0, 0],
+        [0, 0, -1, 0, -1, 0, 0],
+        [0, -1, 0, -1, 0, -1, 0]]
         
 numLayout = bombLayout
 
@@ -72,11 +72,11 @@ def create_layout(numLayout):
             gameHtml = gameHtml + Markup('</span>\n<br>\n<span>')
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success text-success block bomb"></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>\n')
             elif numLayout[x][y] == 0:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn btn-lg btn-success block"></button>\n')
             else:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
                 
     gameHtml = gameHtml + Markup('</span>\n<br>')
     return gameHtml
@@ -85,83 +85,44 @@ def generate_numbers():
     for x in range(len(numLayout)):
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
-                if numLayout[x] == numLayout[0]:
-                    if (y-1) >= 0:
-                        if numLayout[x][y - 1] != -1: #left of bomb
-                            numLayout[x][y - 1] += 1
-                            
-                    if (y+1) != len(numLayout[x]):
-                        if numLayout[x][y + 1] != -1: #right of bomb
-                            numLayout[x][y + 1] += 1
+                if (y-1) >= 0:
+                    if numLayout[x][y - 1] != -1: #left of bomb
+                        numLayout[x][y - 1] += 1
+                        
+                if (y+1) != len(numLayout[x]):
+                    if numLayout[x][y + 1] != -1: #right of bomb
+                        numLayout[x][y + 1] += 1
                     
-                    if (x+1) != len(numLayout):
-                        if numLayout[x + 1][y] != -1: #directly under bomb
-                            numLayout[x + 1][y] += 1
-                                        
-                    if (x+1) != len(numLayout) and (y-1) != len(numLayout[x]):
-                        if numLayout[x + 1][y - 1] != -1: #under, left bomb
-                            numLayout[x + 1][y - 1] += 1
-                                        
-                    if (x+1) != len(numLayout) and (y+1) != len(numLayout[x]):    
-                        if numLayout[x + 1][y + 1] != -1: #under, right bomb
-                            numLayout[x + 1][y + 1] += 1
-                #---------------------------------------------------------------------
-                
-                if numLayout[x] == numLayout[7]:
-                    if (y-1) >= 0:
-                        if numLayout[x][y - 1] != -1: #left of bomb
-                            numLayout[x][y - 1] += 1
-                            
-                    if (y+1) != len(numLayout[x]):
-                        if numLayout[x][y + 1] != -1: #right of bomb
-                            numLayout[x][y + 1] += 1
-                            
-                    if (x-1) != len(numLayout):
-                        if numLayout[x - 1][y] != -1: #directly above bomb
-                                numLayout[x - 1][y] += 1
-                        
-                    if (x-1) != len(numLayout) and (y-1) != len(numLayout[x]):
-                        if numLayout[x - 1][y - 1] != -1: #above, left bomb
-                            numLayout[x - 1][y - 1] += 1
-                                        
-                    if (x-1) != len(numLayout) and (y+1) != len(numLayout[x]):
-                        if numLayout[x - 1][y + 1] != -1: #above, right bomb
-                            numLayout[x - 1][y + 1] += 1
-                #---------------------------------------------------------------------
-                
-                if numLayout[x] != numLayout[0] and numLayout[x] != numLayout[7]:
-                    if (y-1) >= 0:
-                        if numLayout[x][y - 1] != -1: #left of bomb
-                            numLayout[x][y - 1] += 1
-                            
-                    if (y+1) != len(numLayout[x]):
-                        if numLayout[x][y + 1] != -1: #right of bomb
-                            numLayout[x][y + 1] += 1
-                        
-                    if (x-1) != len(numLayout):
-                        if numLayout[x - 1][y] != -1: #directly above bomb
-                                numLayout[x - 1][y] += 1
-                        
-                    if (x-1) != len(numLayout) and (y-1) != len(numLayout[x]):
-                        if numLayout[x - 1][y - 1] != -1: #above, left bomb
-                            numLayout[x - 1][y - 1] += 1
-                                        
-                    if (x-1) != len(numLayout) and (y+1) != len(numLayout[x]):
-                        if numLayout[x - 1][y + 1] != -1: #above, right bomb
-                            numLayout[x - 1][y + 1] += 1
+                if (x-1) != len(numLayout):
+                    if numLayout[x - 1][y] != -1: #directly above bomb
+                            numLayout[x - 1][y] += 1
+                    
+                if (x-1) != len(numLayout) and (y-1) != len(numLayout[x]):
+                    if numLayout[x - 1][y - 1] != -1: #above, left bomb
+                        numLayout[x - 1][y - 1] += 1
                                     
-                    if (x+1) != len(numLayout):
-                        if numLayout[x + 1][y] != -1: #directly under bomb
-                            numLayout[x + 1][y] += 1
-                                        
-                    if (x+1) != len(numLayout) and (y-1) != len(numLayout[x]):
-                        if numLayout[x + 1][y - 1] != -1: #under, left bomb
-                            numLayout[x + 1][y - 1] += 1
-                                        
-                    if (x+1) != len(numLayout) and (y+1) != len(numLayout[x]):    
-                        if numLayout[x + 1][y + 1] != -1: #under, right bomb
-                            numLayout[x + 1][y + 1] += 1
+                if (x-1) != len(numLayout) and (y+1) != len(numLayout[x]):
+                    if numLayout[x - 1][y + 1] != -1: #above, right bomb
+                        numLayout[x - 1][y + 1] += 1
+                                
+                if (x+1) != len(numLayout):
+                    if numLayout[x + 1][y] != -1: #directly under bomb
+                        numLayout[x + 1][y] += 1
+                                    
+                if (x+1) != len(numLayout) and (y-1) != len(numLayout[x]):
+                    if numLayout[x + 1][y - 1] != -1: #under, left bomb
+                        numLayout[x + 1][y - 1] += 1
+                                    
+                if (x+1) != len(numLayout) and (y+1) != len(numLayout[x]):    
+                    if numLayout[x + 1][y + 1] != -1: #under, right bomb
+                        numLayout[x + 1][y + 1] += 1
     return numLayout
+
+@app.route('/bombNum')
+def bombNum():
+    numBomb = 5
+    num = '<b>' + str(numBomb) + '</b>'
+    return num
 
 @app.route('/flag')
 def flagHTML():

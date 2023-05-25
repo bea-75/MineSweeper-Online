@@ -13,12 +13,10 @@ $(document).ready(function() {
 		if (checked == false) {
 			$(this).addClass("check");
 			$(this).removeClass("block");
-			$(this).removeClass("text-success");
 		}
 		if (checked == true) {
 			$(this).removeClass("check");
 			$(this).addClass("block");
-			$(this).addClass("text-success");
 		}
 	});
 	
@@ -26,7 +24,6 @@ $(document).ready(function() {
 		if ($('button').hasClass('check') && $('.check').hasClass('flagged')) {
 			$('.check').load('unflag')
 			$('.check').addClass("block");
-			$('.check').addClass("text-success");
 
 			if ($(".check").hasClass("bomb")) {
 				$('.check').removeClass("flagged-right");
@@ -42,7 +39,6 @@ $(document).ready(function() {
 		else if ($('button').hasClass('check')) {
 			$('.check').load('flag')
 			$('.check').addClass("block");
-			$('.check').addClass("text-success");
 			$('.check').addClass("flagged");
 			
 			if ($(".check").hasClass("bomb")) {
@@ -61,7 +57,6 @@ $(document).ready(function() {
 		if ($('button').hasClass('check') && $(".check").hasClass("bomb")) {
 			$('.bomb').load('bomb')
 			$(".bomb").removeClass("check");
-			$(".bomb").removeClass("text-success");
 			$('.bomb').addClass('exploded');
 			if ($('.bomb').hasClass('flagged-right')) {
 				$(".flagged-right").load('flag')
@@ -74,7 +69,6 @@ $(document).ready(function() {
 		}
 		else if ($('button').hasClass('check')) {
 			$('.check').addClass("destroyed");
-			$('.check').load("bombNum"); 
 			$('.check').removeClass("check");
 			checked = false;
 		} 
