@@ -6,13 +6,17 @@
 
 {% block content %}
 <div class = "row">
-    <div class = "col-2 text-light"></div>
-    <div class = "col-8"> 
+    <div class = "col-4 text-light"></div>
+    <div class = "col-4"> 
 		{{ game }}
-		<h1 class = "flag">&#128681;</h1> <!-- flag -->
-		<h1 class = "destroy">&#128163;</h1> <!-- bomb -->
+		<span>
+			<div class = "roww">
+				<button class = "selector btn"><h1 class = "flag">&#128681;</h1> <!-- flag --></button>
+				<button class = "selector btn"><h1 class = "destroy">&#128163;</h1> <!-- bomb --></button>
+			</div>
+		</span>
 	</div>
-	<div class = "col-2 text-light"></div>
+	<div class = "col-4 text-light"></div>
 </div>
 {% endblock %}
 
