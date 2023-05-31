@@ -1,105 +1,103 @@
-{% extends "layout.html" %}
+.add {
+	margin: 20px;
+}
 
-{% set active_page = "play" %}
+.btn-light {
+	color: black;
+}
 
-{% block title %}page2{% endblock %}
+.pfp {
+	border-radius: 50%;
+}
 
-{% block content %}
-<div class = "row">
-    <div class = "col-4 text-light"></div>
-    <div class = "col-4"> 
-		{{ game }}
-		<span>
-			<div class = "roww">
-				<button class = "selector btn"><h1 class = "flag">&#128681;</h1> <!-- flag --></button>
-				<button class = "selector btn"><h1 class = "destroy">&#128163;</h1> <!-- bomb --></button>
-			</div>
-		</span>
-	</div>
-	<div class = "col-4 text-light"></div>
-</div>
-{% endblock %}
+span {
+	display: inline;
+	width: 100px;
+	height: 100px;
+	padding: 16px;
+	background-color: #44ad45; 
+}
 
+.block {
+	width: 45px;
+	height: 50px;
+	padding: 0px;
+	color: #198754;
+	/*background-color: #198754;*/
+	border-color: #198754;
+	border-radius: 8px;
+}
 
+.block:hover {
+	color: #157348;
+	background-color: #157348;
+}
 
-<!-- <br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-	</span>
-	<br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-	</span>
-	<br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-	</span>
-	<br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-	</span>
-	<br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-	</span>
-	<br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-	</span>
-	<br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-	</span>
-	<br>
-	<span>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
-		<button type="button" class="btn btn-lg btn-success text-success block"></button>
-	</span>
-	<br> -->
+.check:hover {
+	color: #00de00;
+	background-color: #00de00;
+}
+
+.destroyed:hover {
+	color: #cfc4ab;
+	background-color: #cfc4ab;
+}
+
+.check {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #00ff00;
+	color: #00ff00;
+	border-color: #00ff00;
+	border-radius: 8px;
+}
+
+.destroyed {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ebdfc3;
+	color: #ebdfc3;
+	border-color: #ebdfc3;
+	border-radius: 8px;
+}
+
+.exploded {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ff0000;
+	color: #ff0000;
+}
+
+.correct {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #00e016;
+	color: #00e016;
+}
+
+.wrong {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ffd900;
+	color: #ffd900;
+}
+
+.play {
+	background-color: #44ad45;
+}
+
+.selector {
+	background-color: #44ad45;
+	color: #44ad45;
+	border-color: #44ad45;
+	border-radius: 8px;
+}
+
+.roww {
+	text-align: center;
+}
