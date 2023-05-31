@@ -23,15 +23,24 @@ span {
 	height: 50px;
 	padding: 0px;
 	color: #198754;
+	/*background-color: #198754;*/
+	border-color: #198754;
+	border-radius: 8px;
 }
 
 .block:hover {
 	color: #157348;
+	background-color: #157348;
 }
 
 .check:hover {
 	color: #00de00;
 	background-color: #00de00;
+}
+
+.destroyed:hover {
+	color: #cfc4ab;
+	background-color: #cfc4ab;
 }
 
 .check {
@@ -40,6 +49,8 @@ span {
 	height: 50px;
 	background-color: #00ff00;
 	color: #00ff00;
+	border-color: #00ff00;
+	border-radius: 8px;
 }
 
 .destroyed {
@@ -47,8 +58,9 @@ span {
 	width: 45px;
 	height: 50px;
 	background-color: #ebdfc3;
-	color: #0092bf;
-	font-size: 30px;
+	color: #ebdfc3;
+	border-color: #ebdfc3;
+	border-radius: 8px;
 }
 
 .exploded {
