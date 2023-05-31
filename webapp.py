@@ -5,6 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask_oauthlib.client import OAuth
 from bson.objectid import ObjectId
 
+import random
 import pprint
 import os
 import time
@@ -43,15 +44,63 @@ collection = db['Profiles'] #TODO: put the name of the collection here
 
 print("connected to db")
 
-bombLayout = [[0, -1, 0, 0, -1, 0, 0],
-            [0, 0, 0, 0, 0, 0, -1],
-            [0, 0, -1, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, -1],
-            [0, 0, 0, 0, 0, -1, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, -1, 0, 0, 0, 0],
-            [0, -1, 0, 0, 0, 0, 0]]
-        
+y = 0 #tracking length of layer
+x = 0 #tracking length of bombLayout
+
+layer = []
+
+bombLayout = []
+
+def how_many(layers):
+    count = 0
+    for num in layers:
+        if num == -1:
+            count += 1
+    if count >= random.randrange(1,3):
+        return "more"
+    else:
+        return "less"
+
+def generate_bomb_layout():
+    global x
+    global y
+    
+    while x < 13:
+        while y < 10:
+            if layer == []:
+                layer.append(0)
+                y += 1
+            else:
+                counts = how_many(layer)
+                if layer[-1] == -1:
+                    layer.append(0)
+                    y += 1
+                elif counts == "more":
+                    layer.append(0)
+                    y += 1
+                else:
+                    layer.append(random.randrange(-1,1))
+                    y += 1
+        else:
+            copy = layer.copy()
+            bombLayout.append(copy)
+            y = 0
+            layer.clear()
+        x += 1
+    return bombLayout
+
+bombLayout = generate_bomb_layout()
+#bombLayout = [[0, 0, 0, -1, 0, 0, -1], 
+#            [-1, 0, -1, 0, 0, 0, 0], 
+#            [-1, 0, 0, -1, 0, 0, 0], 
+#            [0, 1, 0, -1, 0, 0, 0], 
+#            [-1, 0, 0, -1, 0, 0, 0], 
+#            [-1, 0, 0, 0, -1, 0, 0], 
+#            [0, 0, -1, 0, -1, 0, 0], 
+#            [-1, 0, 0, 0, -1, 0, 0]]
+
+print(bombLayout)     
+            
 numLayout = bombLayout
 
 gameHtml = ""
@@ -72,9 +121,9 @@ def create_layout(numLayout):
             gameHtml = gameHtml + Markup('</span>\n<br>\n<span>')
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success text-success block bomb"></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block bomb"><b>b</b></button>\n')
             elif numLayout[x][y] == 0:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block">..</button>\n')
             else:
                 gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
                 
@@ -86,23 +135,23 @@ def generate_numbers():
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
                 if numLayout[x] == numLayout[0]:
-                    if (y-1) >= 0:
+                    if (y-1) < len(numLayout[x]):
                         if numLayout[x][y - 1] != -1: #left of bomb
                             numLayout[x][y - 1] += 1
                             
-                    if (y+1) != len(numLayout[x]):
+                    if (y+1) < len(numLayout[x]):
                         if numLayout[x][y + 1] != -1: #right of bomb
                             numLayout[x][y + 1] += 1
                     
-                    if (x+1) != len(numLayout):
+                    if (x+1) < len(numLayout):
                         if numLayout[x + 1][y] != -1: #directly under bomb
                             numLayout[x + 1][y] += 1
                                         
-                    if (x+1) != len(numLayout) and (y-1) != len(numLayout[x]):
+                    if (x+1) < len(numLayout) and (y-1) >= 0:
                         if numLayout[x + 1][y - 1] != -1: #under, left bomb
                             numLayout[x + 1][y - 1] += 1
                                         
-                    if (x+1) != len(numLayout) and (y+1) != len(numLayout[x]):    
+                    if (x+1) < len(numLayout) and (y+1) < len(numLayout[x]):    
                         if numLayout[x + 1][y + 1] != -1: #under, right bomb
                             numLayout[x + 1][y + 1] += 1
                 #---------------------------------------------------------------------
@@ -112,19 +161,19 @@ def generate_numbers():
                         if numLayout[x][y - 1] != -1: #left of bomb
                             numLayout[x][y - 1] += 1
                             
-                    if (y+1) != len(numLayout[x]):
+                    if (y+1) < len(numLayout[x]):
                         if numLayout[x][y + 1] != -1: #right of bomb
                             numLayout[x][y + 1] += 1
                             
-                    if (x-1) != len(numLayout):
+                    if (x-1) < len(numLayout):
                         if numLayout[x - 1][y] != -1: #directly above bomb
                                 numLayout[x - 1][y] += 1
                         
-                    if (x-1) != len(numLayout) and (y-1) != len(numLayout[x]):
+                    if (x-1) < len(numLayout) and (y-1) >= 0:
                         if numLayout[x - 1][y - 1] != -1: #above, left bomb
                             numLayout[x - 1][y - 1] += 1
                                         
-                    if (x-1) != len(numLayout) and (y+1) != len(numLayout[x]):
+                    if (x-1) < len(numLayout) and (y+1) < len(numLayout[x]):
                         if numLayout[x - 1][y + 1] != -1: #above, right bomb
                             numLayout[x - 1][y + 1] += 1
                 #---------------------------------------------------------------------
@@ -134,31 +183,31 @@ def generate_numbers():
                         if numLayout[x][y - 1] != -1: #left of bomb
                             numLayout[x][y - 1] += 1
                             
-                    if (y+1) != len(numLayout[x]):
+                    if (y+1) < len(numLayout[x]):
                         if numLayout[x][y + 1] != -1: #right of bomb
                             numLayout[x][y + 1] += 1
                         
-                    if (x-1) != len(numLayout):
+                    if (x-1) < len(numLayout):
                         if numLayout[x - 1][y] != -1: #directly above bomb
                                 numLayout[x - 1][y] += 1
                         
-                    if (x-1) != len(numLayout) and (y-1) != len(numLayout[x]):
+                    if (x-1) < len(numLayout) and (y-1) >= 0:
                         if numLayout[x - 1][y - 1] != -1: #above, left bomb
                             numLayout[x - 1][y - 1] += 1
                                         
-                    if (x-1) != len(numLayout) and (y+1) != len(numLayout[x]):
+                    if (x-1) < len(numLayout) and (y+1) < len(numLayout[x]):
                         if numLayout[x - 1][y + 1] != -1: #above, right bomb
                             numLayout[x - 1][y + 1] += 1
                                     
-                    if (x+1) != len(numLayout):
+                    if (x+1) < len(numLayout):
                         if numLayout[x + 1][y] != -1: #directly under bomb
                             numLayout[x + 1][y] += 1
                                         
-                    if (x+1) != len(numLayout) and (y-1) != len(numLayout[x]):
+                    if (x+1) < len(numLayout) and (y-1) >= 0:
                         if numLayout[x + 1][y - 1] != -1: #under, left bomb
                             numLayout[x + 1][y - 1] += 1
                                         
-                    if (x+1) != len(numLayout) and (y+1) != len(numLayout[x]):    
+                    if (x+1) < len(numLayout) and (y+1) < len(numLayout[x]):    
                         if numLayout[x + 1][y + 1] != -1: #under, right bomb
                             numLayout[x + 1][y + 1] += 1
     return numLayout
@@ -242,9 +291,12 @@ def renderGame():
     if gameHtml == "":
         numLayout = generate_numbers()
         gameLayout = create_layout(numLayout)
-        print(numLayout)
+        #print(numLayout)
     else:
-        gameLayout = gameHtml
+        gameHtml = ""
+        numLayout = bombLayout
+        gameLayout = create_layout(numLayout)
+        #print(numLayout)
     return render_template('game.html', game = gameLayout)
 
 #the tokengetter is automatically called to check who is logged in.
