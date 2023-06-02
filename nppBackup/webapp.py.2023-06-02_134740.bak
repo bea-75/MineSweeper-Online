@@ -67,9 +67,6 @@ def generate_bomb_layout():
     global y
     global bombLayout
     
-    bLayout = bombLayout.copy
-    bLayout = []
-    
     while x < 13:
         while y < 10:
             if layer == []:
@@ -92,7 +89,6 @@ def generate_bomb_layout():
             y = 0
             layer.clear()
         x += 1
-    return bLayout
 
 #bombLayout = [[0, 0, 0, -1, 0, 0, -1], 
 #            [-1, 0, -1, 0, 0, 0, 0], 
@@ -295,8 +291,9 @@ def renderGame():
     global numLayout
     print(bombLayout)
     gameHtml = ""
+    bombLayout = []
     print(bombLayout)
-    bombLayout = generate_bomb_layout()
+    generate_bomb_layout()
     print(bombLayout)
     numLayout = bombLayout
     print(numLayout)

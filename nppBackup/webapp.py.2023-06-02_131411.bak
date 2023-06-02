@@ -50,7 +50,6 @@ x = 0 #tracking length of bombLayout
 layer = []
 
 bombLayout = []
-bombLayout.clear()
 
 def how_many(layers):
     count = 0
@@ -65,10 +64,6 @@ def how_many(layers):
 def generate_bomb_layout():
     global x
     global y
-    global bombLayout
-    
-    bLayout = bombLayout.copy
-    bLayout = []
     
     while x < 13:
         while y < 10:
@@ -92,8 +87,9 @@ def generate_bomb_layout():
             y = 0
             layer.clear()
         x += 1
-    return bLayout
+    return bombLayout
 
+bombLayout = generate_bomb_layout()
 #bombLayout = [[0, 0, 0, -1, 0, 0, -1], 
 #            [-1, 0, -1, 0, 0, 0, 0], 
 #            [-1, 0, 0, -1, 0, 0, 0], 
@@ -103,7 +99,7 @@ def generate_bomb_layout():
 #            [0, 0, -1, 0, -1, 0, 0], 
 #            [-1, 0, 0, 0, -1, 0, 0]]    
             
-numLayout = []
+numLayout = bombLayout
 
 gameHtml = ""
 
@@ -118,7 +114,7 @@ def inject_logged_in():
 def create_layout(numLayout):
     global gameHtml
     for x in range(len(numLayout)):
-        if bombLayout[x] == bombLayout[0]:
+        if numLayout[x] == bombLayout[0]:
             gameHtml = gameHtml + Markup('<span>\n')
         else:
             gameHtml = gameHtml + Markup('</span>\n<br>\n<span>')
@@ -134,6 +130,7 @@ def create_layout(numLayout):
     return gameHtml
     
 def generate_numbers():
+    
     for x in range(len(numLayout)):
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
@@ -215,6 +212,10 @@ def generate_numbers():
                             numLayout[x + 1][y + 1] += 1
     return numLayout
 
+def reset_arrays(array):
+    array.clear()
+    return array
+
 @app.route('/flag')
 def flagHTML():
     flag = "<h3>&#128681;</h3>"
@@ -288,22 +289,30 @@ def renderProfile():
             time = "None"
     return render_template('profile.html', pfp = pfp, alt = str(alt), user = user, time = time, wins = wins, loses = loses, achieve = achieve)
 
+@app.route('/game/restart')
+def game_restart():
+    global gameHtml
+    global bombLayout
+    gameHtml = ""
+    bombLayout = reset_arrays(bombLayout)
+    return redirect('/game')
+
 @app.route('/game')
 def renderGame():
     global gameHtml
     global bombLayout
     global numLayout
-    print(bombLayout)
-    gameHtml = ""
-    print(bombLayout)
-    bombLayout = generate_bomb_layout()
-    print(bombLayout)
-    numLayout = bombLayout
-    print(numLayout)
-    numLayout = generate_numbers()
-    print(numLayout)
-    gameHtml = create_layout(numLayout)
-    print(gameHtml)
+    if gameHtml == "":
+        bombLayout = generate_bomb_layout()
+        numLayout = generate_numbers()
+        gameHtml = create_layout(numLayout)
+        #print(numLayout)
+    else:
+        gameHtml = ""
+        bombLayout = generate_bomb_layout()
+        numLayout = bombLayout
+        gameHtml = create_layout(numLayout)
+        #print(numLayout)
     return render_template('game.html', game = gameHtml)
 
 #the tokengetter is automatically called to check who is logged in.

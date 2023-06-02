@@ -68,7 +68,7 @@ $(document).ready(function() {
 			}
 		}
 		else if ($('button').hasClass('check') && $(".check").hasClass("0")) {
-			$('.0').addClass("destroyed-0");
+			$('.check').addClass("destroyed-0");
 			$('.check').removeClass("check");
 			checked = false;
 		}

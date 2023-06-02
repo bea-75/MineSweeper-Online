@@ -67,15 +67,10 @@ $(document).ready(function() {
 				$(".flagged-wrong").addClass("wrong");
 			}
 		}
-		else if ($('button').hasClass('check') && $(".check").hasClass("0")) {
-			$('.0').addClass("destroyed-0");
-			$('.check').removeClass("check");
-			checked = false;
-		}
 		else if ($('button').hasClass('check')) {
-			$('.check').addClass("destroyed");
+			$('.check').addClass("destroyed-0");
 			$('.check').removeClass("check");
 			checked = false;
-		}
+		} 
 	});
 });

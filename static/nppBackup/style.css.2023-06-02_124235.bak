@@ -23,7 +23,7 @@ span {
 	height: 55px;
 	padding: 0px;
 	color: #198754;
-	/*background-color: #198754;*/
+	background-color: #198754;
 	border-color: #198754;
 	border-radius: 8px;
 }
@@ -39,11 +39,6 @@ span {
 }
 
 .destroyed:hover {
-	color: #cfc4ab;
-	background-color: #cfc4ab;
-}
-
-.destroyed-0:hover {
 	color: #cfc4ab;
 	background-color: #cfc4ab;
 }
@@ -69,24 +64,12 @@ span {
 	font-size: 18px;
 }
 
-.destroyed-0 {
-	padding: 0px;
-	width: 45px;
-	height: 50px;
-	background-color: #ebdfc3;
-	color: #ebdfc3;
-	border-color: #ebdfc3;
-	border-radius: 8px;
-	font-size: 18px;
-}
-
 .exploded {
 	padding: 0px;
 	width: 45px;
 	height: 50px;
 	background-color: #ff0000;
 	color: #ff0000;
-	border-color: #ff0000;
 }
 
 .correct {
@@ -95,7 +78,6 @@ span {
 	height: 50px;
 	background-color: #00e016;
 	color: #00e016;
-	border-color: #00e016;
 }
 
 .wrong {

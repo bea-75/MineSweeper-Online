@@ -50,7 +50,6 @@ x = 0 #tracking length of bombLayout
 layer = []
 
 bombLayout = []
-bombLayout.clear()
 
 def how_many(layers):
     count = 0
@@ -65,10 +64,6 @@ def how_many(layers):
 def generate_bomb_layout():
     global x
     global y
-    global bombLayout
-    
-    bLayout = bombLayout.copy
-    bLayout = []
     
     while x < 13:
         while y < 10:
@@ -92,8 +87,9 @@ def generate_bomb_layout():
             y = 0
             layer.clear()
         x += 1
-    return bLayout
+    return bombLayout
 
+bombLayout = generate_bomb_layout()
 #bombLayout = [[0, 0, 0, -1, 0, 0, -1], 
 #            [-1, 0, -1, 0, 0, 0, 0], 
 #            [-1, 0, 0, -1, 0, 0, 0], 
@@ -103,10 +99,9 @@ def generate_bomb_layout():
 #            [0, 0, -1, 0, -1, 0, 0], 
 #            [-1, 0, 0, 0, -1, 0, 0]]    
             
-numLayout = []
+numLayout = bombLayout
 
-gameHtml = ""
-
+gameHtml = "<p></p>\n"
 
 #context processors run before templates are rendered and add variable(s) to the template's context
 #context processors must return a dictionary 
@@ -291,19 +286,15 @@ def renderProfile():
 @app.route('/game')
 def renderGame():
     global gameHtml
-    global bombLayout
-    global numLayout
-    print(bombLayout)
-    gameHtml = ""
-    print(bombLayout)
-    bombLayout = generate_bomb_layout()
-    print(bombLayout)
-    numLayout = bombLayout
-    print(numLayout)
-    numLayout = generate_numbers()
-    print(numLayout)
-    gameHtml = create_layout(numLayout)
-    print(gameHtml)
+    if gameHtml == "<p></p>":
+        numLayout = generate_numbers()
+        gameHtml = create_layout(numLayout)
+        #print(numLayout)
+    else:
+        gameHtml = "<p></p>\n"
+        numLayout = bombLayout
+        gameHtml = create_layout(numLayout)
+        #print(numLayout)
     return render_template('game.html', game = gameHtml)
 
 #the tokengetter is automatically called to check who is logged in.

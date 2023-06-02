@@ -296,7 +296,7 @@ def renderGame():
     print(bombLayout)
     gameHtml = ""
     print(bombLayout)
-    bombLayout = generate_bomb_layout()
+    generate_bomb_layout()
     print(bombLayout)
     numLayout = bombLayout
     print(numLayout)

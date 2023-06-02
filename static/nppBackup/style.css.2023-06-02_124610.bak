@@ -23,7 +23,7 @@ span {
 	height: 55px;
 	padding: 0px;
 	color: #198754;
-	/*background-color: #198754;*/
+	background-color: #198754;
 	border-color: #198754;
 	border-radius: 8px;
 }
@@ -39,11 +39,6 @@ span {
 }
 
 .destroyed:hover {
-	color: #cfc4ab;
-	background-color: #cfc4ab;
-}
-
-.destroyed-0:hover {
 	color: #cfc4ab;
 	background-color: #cfc4ab;
 }
@@ -95,7 +90,6 @@ span {
 	height: 50px;
 	background-color: #00e016;
 	color: #00e016;
-	border-color: #00e016;
 }
 
 .wrong {
