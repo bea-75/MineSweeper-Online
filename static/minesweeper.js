@@ -1,87 +1,127 @@
-$(document).ready(function() {
-	
-	var checked = false;
-	var game_end = false;
-	
-	$(".bomb-num").load("bomb_num")
-	
-	$(".block").click(function() {
-		if ($('button').hasClass('check')){
-			checked = true;
-		} else {
-			checked = false;
-		}
-		
-		
-		if (checked == false) {
-			$(this).addClass("check");
-			$(this).removeClass("block");
-		}
-		if (checked == true) {
-			$(this).removeClass("check");
-			$(this).addClass("block");
-		}
-	});
-	
-	$(".flag").click(function() {
-		if ($('button').hasClass('check') && $('.check').hasClass('flagged')) {
-			$('.check').load('unflag')
-			$('.check').addClass("block");
+.add {
+	margin: 20px;
+}
 
-			if ($(".check").hasClass("bomb")) {
-				$('.check').removeClass("flagged-right");
-			}
-			else {
-				$('.check').removeClass("flagged-wrong");
-			}
-			
-			$('.check').removeClass("flagged");
-			$('.check').removeClass("check");
-			checked = false;
-		}
-		else if ($('button').hasClass('check')) {
-			$('.check').load('flag')
-			$('.check').addClass("block");
-			$('.check').addClass("flagged");
-			
-			if ($(".check").hasClass("bomb")) {
-				$('.check').addClass("flagged-right");
-			}
-			else {
-				$('.check').addClass("flagged-wrong");
-			}
-			
-			$('.check').removeClass("check");
-			checked = false;
-		}
-	});
-	
-	$(".destroy").click(function(){
-		if ($('button').hasClass('check') && $(".check").hasClass("bomb")) {
-			$('.bomb').load('bomb')
-			$(".bomb").removeClass("check");
-			$('.bomb').addClass('exploded');
-			if ($('.bomb').hasClass('flagged-right')) {
-				$(".flagged-right").load('flag')
-				$(".flagged-right").addClass("correct");
-			}	
-			if ($(".block").hasClass("flagged-wrong")) {
-				$(".flagged-wrong").load('flag')
-				$(".flagged-wrong").addClass("wrong");
-			}
-			setTimeout(function(){
-				$('.game').load('game_end_lose')
-			}, 1000);
-		}
-		else if ($('button').hasClass('check') && $(".check").hasClass("0")) {
-			$('.0').addClass("destroyed-0");
-			$('.check').removeClass("check");
-			checked = false;
-		}
-		else if ($('button').hasClass('check')) {
-			$('.check').addClass("destroyed");
-			$('.check').removeClass("check");
-			checked = false;
-		}
-	});
-});
+.btn-light {
+	color: black;
+}
+
+.pfp {
+	border-radius: 50%;
+}
+
+span {
+	display: inline;
+	width: 100px;
+	height: 100px;
+	padding: 16px;
+	background-color: #44ad45; 
+}
+
+.block {
+	width: 45px;
+	height: 55px;
+	padding: 0px;
+	color: #198754;
+	/*background-color: #198754;*/
+	border-color: #198754;
+	border-radius: 8px;
+}
+
+.block:hover {
+	color: #157348;
+	background-color: #157348;
+}
+
+.check:hover {
+	color: #00de00;
+	background-color: #00de00;
+}
+
+.destroyed:hover {
+	color: #cfc4ab;
+	background-color: #cfc4ab;
+}
+
+.destroyed-0:hover {
+	color: #cfc4ab;
+	background-color: #cfc4ab;
+}
+
+.check {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #00ff00;
+	color: #00ff00;
+	border-color: #00ff00;
+	border-radius: 8px;
+}
+
+.destroyed {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ebdfc3;
+	color: black;
+	border-color: #ebdfc3;
+	border-radius: 8px;
+	font-size: 18px;
+}
+
+.destroyed-0 {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ebdfc3;
+	color: #ebdfc3;
+	border-color: #ebdfc3;
+	border-radius: 8px;
+	font-size: 18px;
+}
+
+.exploded {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ff0000;
+	color: #ff0000;
+	border-color: #ff0000;
+}
+
+.correct {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #00e016;
+	color: #00e016;
+	border-color: #00e016;
+}
+
+.wrong {
+	padding: 0px;
+	width: 45px;
+	height: 50px;
+	background-color: #ffd900;
+	color: #ffd900;
+}
+
+.play {
+	background-color: #44ad45;
+}
+
+.selector {
+	background-color: #44ad45;
+	color: #44ad45;
+	border-color: #44ad45;
+	border-radius: 8px;
+}
+
+.centered {
+	text-align: center;
+}
+
+.bomb-num {
+	font-size: 20px;
+	color: white;
+}
