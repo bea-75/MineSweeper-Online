@@ -276,8 +276,7 @@ def bombNum():
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
                 count += 1
-    returned = "<b>Flags Left: " + str(count) + "</b>"
-    return returned
+    return count
 
 #redirect to GitHub's OAuth page and confirm callback URL
 @app.route('/login')

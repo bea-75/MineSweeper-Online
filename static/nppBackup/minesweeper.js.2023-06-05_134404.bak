@@ -3,8 +3,6 @@ $(document).ready(function() {
 	var checked = false;
 	var game_end = false;
 	
-	$(".bomb-num").load("bomb_num")
-	
 	$(".block").click(function() {
 		if ($('button').hasClass('check')){
 			checked = true;
@@ -70,7 +68,7 @@ $(document).ready(function() {
 				$(".flagged-wrong").addClass("wrong");
 			}
 			setTimeout(function(){
-				$('.game').load('game_end_lose')
+				$('.col-sm-6').load('game_end')
 			}, 1000);
 		}
 		else if ($('button').hasClass('check') && $(".check").hasClass("0")) {

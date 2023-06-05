@@ -118,10 +118,10 @@ def inject_logged_in():
 def create_layout(numLayout):
     global gameHtml
     for x in range(len(numLayout)):
-        if bombLayout[x] == bombLayout.index(bombLayout[0]):
+        if bombLayout[x] == bombLayout[0]:
             gameHtml = gameHtml + Markup('<span>\n')
         else:
-            gameHtml = gameHtml + Markup('</span>\n<br>\n<span>\n')
+            gameHtml = gameHtml + Markup('</span>\n<br>\n<span>')
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
                 gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block bomb"><b>b</b></button>\n')
@@ -130,14 +130,14 @@ def create_layout(numLayout):
             else:
                 gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
                 
-    gameHtml = gameHtml + Markup('</span>\n<br>\n')
+    gameHtml = gameHtml + Markup('</span>\n<br>')
     return gameHtml
     
 def generate_numbers():
     for x in range(len(numLayout)):
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
-                if numLayout[x] == numLayout.index(numLayout[0]):
+                if numLayout[x] == numLayout[0]:
                     if (y-1) < len(numLayout[x]):
                         if numLayout[x][y - 1] != -1: #left of bomb
                             numLayout[x][y - 1] += 1
@@ -159,7 +159,7 @@ def generate_numbers():
                             numLayout[x + 1][y + 1] += 1
                 #---------------------------------------------------------------------
                 
-                if numLayout[x] == numLayout.index(numLayout[7]):
+                if numLayout[x] == numLayout[7]:
                     if (y-1) >= 0:
                         if numLayout[x][y - 1] != -1: #left of bomb
                             numLayout[x][y - 1] += 1
@@ -235,49 +235,13 @@ def home():
     #print(generate_numbers())
     return render_template('home.html')
     
-@app.route('/game_end_lose')
-def gameEndLose():
+@app.route('/game_end')
+def gameEnd():
     global game_end
     game_end = True
-    if 'user_data' in session:
-        user = session['user_data']['login']
-        collection.update_one({"User":user},
-        {
-            "$set": {
-                {"Loses": "Loses" + 1}
-            }
-        })
-    
     time = "00.00.00"
     end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
     return end
-    
-@app.route('/game_end_win')
-def gameEndWin():
-    global game_end
-    game_end = True
-    if 'user_data' in session:
-        user = session['user_data']['login']
-        collection.update_one({"User":user},
-        {
-            "$set": {
-                {"Wins": "Wins" + 1}
-            }
-        })
-    
-    time = "00.00.00"
-    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
-    return end
-    
-@app.route("/bomb_num")
-def bombNum():
-    count = 0
-    for x in range(len(numLayout)):
-        for y in range(len(numLayout[x])):
-            if numLayout[x][y] == -1:
-                count += 1
-    returned = "<b>Flags Left: " + str(count) + "</b>"
-    return returned
 
 #redirect to GitHub's OAuth page and confirm callback URL
 @app.route('/login')

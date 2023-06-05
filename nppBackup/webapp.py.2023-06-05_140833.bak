@@ -235,49 +235,22 @@ def home():
     #print(generate_numbers())
     return render_template('home.html')
     
-@app.route('/game_end_lose')
-def gameEndLose():
+@app.route('/game_end')
+def gameEnd():
     global game_end
     game_end = True
     if 'user_data' in session:
         user = session['user_data']['login']
         collection.update_one({"User":user},
         {
-            "$set": {
-                {"Loses": "Loses" + 1}
+            $set: {
+                Loses: Loses + 1
             }
         })
     
     time = "00.00.00"
     end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
     return end
-    
-@app.route('/game_end_win')
-def gameEndWin():
-    global game_end
-    game_end = True
-    if 'user_data' in session:
-        user = session['user_data']['login']
-        collection.update_one({"User":user},
-        {
-            "$set": {
-                {"Wins": "Wins" + 1}
-            }
-        })
-    
-    time = "00.00.00"
-    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
-    return end
-    
-@app.route("/bomb_num")
-def bombNum():
-    count = 0
-    for x in range(len(numLayout)):
-        for y in range(len(numLayout[x])):
-            if numLayout[x][y] == -1:
-                count += 1
-    returned = "<b>Flags Left: " + str(count) + "</b>"
-    return returned
 
 #redirect to GitHub's OAuth page and confirm callback URL
 @app.route('/login')

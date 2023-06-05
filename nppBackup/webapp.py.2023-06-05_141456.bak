@@ -268,16 +268,6 @@ def gameEndWin():
     time = "00.00.00"
     end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
     return end
-    
-@app.route("/bomb_num")
-def bombNum():
-    count = 0
-    for x in range(len(numLayout)):
-        for y in range(len(numLayout[x])):
-            if numLayout[x][y] == -1:
-                count += 1
-    returned = "<b>Flags Left: " + str(count) + "</b>"
-    return returned
 
 #redirect to GitHub's OAuth page and confirm callback URL
 @app.route('/login')

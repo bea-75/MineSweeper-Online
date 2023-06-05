@@ -3,8 +3,6 @@ $(document).ready(function() {
 	var checked = false;
 	var game_end = false;
 	
-	$(".bomb-num").load("bomb_num")
-	
 	$(".block").click(function() {
 		if ($('button').hasClass('check')){
 			checked = true;
@@ -69,9 +67,7 @@ $(document).ready(function() {
 				$(".flagged-wrong").load('flag')
 				$(".flagged-wrong").addClass("wrong");
 			}
-			setTimeout(function(){
-				$('.game').load('game_end_lose')
-			}, 1000);
+			game_end = true;
 		}
 		else if ($('button').hasClass('check') && $(".check").hasClass("0")) {
 			$('.0').addClass("destroyed-0");
@@ -84,4 +80,10 @@ $(document).ready(function() {
 			checked = false;
 		}
 	});
+	
+	if (game_end == true) {
+		setTimeout(function(){
+			$('.row').load('flag')
+		}, 500);
+	}
 });
