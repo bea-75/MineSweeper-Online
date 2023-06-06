@@ -5,6 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask_oauthlib.client import OAuth
 from bson.objectid import ObjectId
 
+import time
 import random
 import pprint
 import os
@@ -47,6 +48,8 @@ print("connected to db")
 y = 0 #tracking length of layer
 x = 0 #tracking length of bombLayout
 
+game_end = False
+
 layer = []
 
 bombLayout = []
@@ -66,9 +69,6 @@ def generate_bomb_layout():
     global x
     global y
     global bombLayout
-    
-    bLayout = bombLayout.copy
-    bLayout = []
     
     while x < 13:
         while y < 10:
@@ -92,7 +92,7 @@ def generate_bomb_layout():
             y = 0
             layer.clear()
         x += 1
-    return bLayout
+    return bombLayout
 
 #bombLayout = [[0, 0, 0, -1, 0, 0, -1], 
 #            [-1, 0, -1, 0, 0, 0, 0], 
@@ -118,10 +118,10 @@ def inject_logged_in():
 def create_layout(numLayout):
     global gameHtml
     for x in range(len(numLayout)):
-        if bombLayout[x] == bombLayout[0]:
+        if bombLayout[x] == bombLayout.index(bombLayout[0]):
             gameHtml = gameHtml + Markup('<span>\n')
         else:
-            gameHtml = gameHtml + Markup('</span>\n<br>\n<span>')
+            gameHtml = gameHtml + Markup('</span>\n<br>\n<span>\n')
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
                 gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block bomb"><b>b</b></button>\n')
@@ -130,14 +130,14 @@ def create_layout(numLayout):
             else:
                 gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
                 
-    gameHtml = gameHtml + Markup('</span>\n<br>')
+    gameHtml = gameHtml + Markup('</span>\n<br>\n')
     return gameHtml
     
 def generate_numbers():
     for x in range(len(numLayout)):
         for y in range(len(numLayout[x])):
             if numLayout[x][y] == -1:
-                if numLayout[x] == numLayout[0]:
+                if numLayout[x] == numLayout.index(numLayout[0]):
                     if (y-1) < len(numLayout[x]):
                         if numLayout[x][y - 1] != -1: #left of bomb
                             numLayout[x][y - 1] += 1
@@ -159,7 +159,7 @@ def generate_numbers():
                             numLayout[x + 1][y + 1] += 1
                 #---------------------------------------------------------------------
                 
-                if numLayout[x] == numLayout[7]:
+                if numLayout[x] == numLayout.index(numLayout[7]):
                     if (y-1) >= 0:
                         if numLayout[x][y - 1] != -1: #left of bomb
                             numLayout[x][y - 1] += 1
@@ -234,6 +234,50 @@ def bombHTML():
 def home():
     #print(generate_numbers())
     return render_template('home.html')
+    
+@app.route('/game_end_lose')
+def gameEndLose():
+    global game_end
+    game_end = True
+    if 'user_data' in session:
+        user = session['user_data']['login']
+        collection.update_one({"User":user},
+        {
+            "$set": {
+                {"Loses": "Loses" + 1}
+            }
+        })
+    
+    time = "00.00.00"
+    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
+    return end
+    
+@app.route('/game_end_win')
+def gameEndWin():
+    global game_end
+    game_end = True
+    if 'user_data' in session:
+        user = session['user_data']['login']
+        collection.update_one({"User":user},
+        {
+            "$set": {
+                {"Wins": "Wins" + 1}
+            }
+        })
+    
+    time = "00.00.00"
+    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
+    return end
+    
+@app.route("/bomb_num")
+def bombNum():
+    count = 0
+    for x in range(len(numLayout)):
+        for y in range(len(numLayout[x])):
+            if numLayout[x][y] == -1:
+                count += 1
+    returned = "<b>Flags Left: " + str(count) + "</b>"
+    return returned
 
 #redirect to GitHub's OAuth page and confirm callback URL
 @app.route('/login')
@@ -293,15 +337,13 @@ def renderGame():
     global gameHtml
     global bombLayout
     global numLayout
-    print(bombLayout)
+    
+    start_time = time.time()
+    
     gameHtml = ""
-    print(bombLayout)
     bombLayout = generate_bomb_layout()
-    print(bombLayout)
     numLayout = bombLayout
-    print(numLayout)
-    numLayout = generate_numbers()
-    print(numLayout)
+    #numLayout = generate_numbers()
     gameHtml = create_layout(numLayout)
     print(gameHtml)
     return render_template('game.html', game = gameHtml)
