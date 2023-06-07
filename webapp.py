@@ -55,6 +55,19 @@ layer = []
 bombLayout = []
 bombLayout.clear()
 
+flagNum = 0
+
+start_time = 0
+
+@app.route("/game-restart")
+def gameRestart():
+    global flagNum
+    global bombLayout
+    #bombLayout = []
+    start_time = 0
+    flagNum = 0
+    return redirect('/game')
+
 def how_many(layers):
     count = 0
     for num in layers:
@@ -106,7 +119,6 @@ def generate_bomb_layout():
 numLayout = []
 
 gameHtml = ""
-
 
 #context processors run before templates are rendered and add variable(s) to the template's context
 #context processors must return a dictionary 
@@ -222,13 +234,18 @@ def flagHTML():
     
 @app.route('/unflag')
 def unflagHTML():
-    unflag = ".."
+    unflag = "<b>..</b>"
     return unflag
     
 @app.route('/bomb')
 def bombHTML():
     bomb = "<h3>&#128163;</h3>"
     return bomb
+    
+@app.route('/unflag_bomb')
+def unflagBombHTML():
+    unflag = "<b>b</b>"
+    return unflag
 
 @app.route('/')
 def home():
@@ -237,8 +254,11 @@ def home():
     
 @app.route('/game_end_lose')
 def gameEndLose():
+    global start_time
     global game_end
     game_end = True
+    end_time = time.time()
+    time = end_time - start_time
     if 'user_data' in session:
         user = session['user_data']['login']
         collection.update_one({"User":user},
@@ -247,36 +267,72 @@ def gameEndLose():
                 {"Loses": "Loses" + 1}
             }
         })
-    
-    time = "00.00.00"
-    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
+        
+    timed = round(time)
+        
+    #end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(round(time))+'</h3>\n</div>'
+    end = "Wee"
     return end
     
 @app.route('/game_end_win')
 def gameEndWin():
     global game_end
+    global start_time
     game_end = True
-    if 'user_data' in session:
-        user = session['user_data']['login']
-        collection.update_one({"User":user},
-        {
-            "$set": {
-                {"Wins": "Wins" + 1}
-            }
-        })
+    end_time = time.time()
+    time = end_time - start_time
     
-    time = "00.00.00"
-    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
+    if flagNum == 0:
+        end = '<div>\n<h2> You Win! </h2>\n<h3>Time Taken: '+str(time)+'</h3>\n</div>'
+        if 'user_data' in session:
+            user = session['user_data']['login']
+            collection.update_one({"User":user},
+            {
+                "$set": {
+                    {"Wins": "Wins" + 1}
+                }
+            })
+    else: 
+        end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(time)+'</h3>\n</div>'
+        if 'user_data' in session:
+            user = session['user_data']['login']
+            collection.update_one({"User":user},
+            {
+                "$set": {
+                    {"Loses": "Loses" + 1}
+                }
+            })
     return end
     
-@app.route("/bomb_num")
+@app.route('/continue')
+def continued():
+    continued = "Continue to End Screen"
+    return continued
+
+@app.route("/bomb_num", methods = ['GET', 'POST'])
 def bombNum():
-    count = 0
-    for x in range(len(numLayout)):
-        for y in range(len(numLayout[x])):
-            if numLayout[x][y] == -1:
-                count += 1
-    returned = "<b>Flags Left: " + str(count) + "</b>"
+    global flagNum
+    flagNum = 0
+    if flagNum == 0:
+        for x in range(len(bombLayout)):
+            for y in range(len(bombLayout[x])):
+                if bombLayout[x][y] == -1:
+                    flagNum += 1
+        returned = "<b>Flags Left: " + str(flagNum) + " &#128681;</b>"
+    return returned
+ 
+@app.route('/minus_flag')
+def minusFlag():
+    global flagNum
+    flagNum -= 1
+    returned = "<b>Flags Left: " + str(flagNum) + " &#128681;</b>"
+    return returned
+    
+@app.route('/plus_flag')
+def plusFlag():
+    global flagNum
+    flagNum += 1
+    returned = "<b>Flags Left: " + str(flagNum) + " &#128681;</b>"
     return returned
 
 #redirect to GitHub's OAuth page and confirm callback URL
@@ -337,6 +393,7 @@ def renderGame():
     global gameHtml
     global bombLayout
     global numLayout
+    global start_time
     
     start_time = time.time()
     

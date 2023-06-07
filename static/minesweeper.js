@@ -1,9 +1,11 @@
 $(document).ready(function() {
-
+	
 	var checked = false;
 	var game_end = false;
 
-	$(".bomb-num").load("bomb_num")
+	$(".bomb-num").load("bomb_num");
+	var flagNum = $(".bomb-num").load("bomb_num");
+	//var flagNum = 0
 
 	$(".block").click(function() {
 		if ($('button').hasClass('check')){
@@ -25,18 +27,21 @@ $(document).ready(function() {
 
 	$(".flag").click(function() {
 		if ($('button').hasClass('check') && $('.check').hasClass('flagged')) {
-			$('.check').load('unflag')
 			$('.check').addClass("block");
 
 			if ($(".check").hasClass("bomb")) {
 				$('.check').removeClass("flagged-right");
+				$('.check').addClass('bomb')
+				$('.check').load('unflag-bomb')
 			}
 			else {
 				$('.check').removeClass("flagged-wrong");
+				$('.check').load('unflag')
 			}
 
 			$('.check').removeClass("flagged");
 			$('.check').removeClass("check");
+			$(".bomb-num").load("plus_flag");
 			checked = false;
 		}
 		else if ($('button').hasClass('check')) {
@@ -46,11 +51,12 @@ $(document).ready(function() {
 
 			if ($(".check").hasClass("bomb")) {
 				$('.check').addClass("flagged-right");
+				$('.check').removeClass('bomb')
 			}
 			else {
 				$('.check').addClass("flagged-wrong");
 			}
-
+			$(".bomb-num").load("minus_flag");
 			$('.check').removeClass("check");
 			checked = false;
 		}
@@ -58,7 +64,7 @@ $(document).ready(function() {
 
 	$(".destroy").click(function(){
 		if ($('button').hasClass('check') && $(".check").hasClass("bomb")) {
-			$('.bomb').load('bomb')
+			$('.bomb').load('bomb');
 			$(".bomb").removeClass("check");
 			$('.bomb').addClass('exploded');
 			if ($('.bomb').hasClass('flagged-right')) {
@@ -83,5 +89,23 @@ $(document).ready(function() {
 			$('.check').removeClass("check");
 			checked = false;
 		}
+	});
+	
+	$(".end").click(function() {
+		$(".flagged-right").addClass("correct");
+		$('.bomb').load('bomb');
+		$('.bomb').addClass('exploded');
+		$(".flagged-wrong").addClass("wrong");
+		$('.end').addClass('continue')
+		$('.continue').load('continue')
+		
+		$('.continue').click(function() {
+			if ($('.block').hasClass('bomb')) {
+				$('.game').load('game_end_lose')
+			}
+			else {
+				$('.game').load('game_end_win')
+			}
+		});
 	});
 });
