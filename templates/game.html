@@ -5,18 +5,20 @@
 {% block title %}page2{% endblock %}
 
 {% block content %}
-<div class = "row">
-    <div class = "col-4 text-light"></div>
-    <div class = "col-4"> 
-		{{ game }}
-		<span>
-			<div class = "roww">
+<div class = "row centered">
+    <div class = "col-sm-3 text-light"></div>
+    <div class = "col-sm-6"> 
+		<div class = "game">
+			<div class = "bomb-num"></div>
+			{{ game }}
+			<span>
 				<button class = "selector btn"><h1 class = "flag">&#128681;</h1> <!-- flag --></button>
 				<button class = "selector btn"><h1 class = "destroy">&#128163;</h1> <!-- bomb --></button>
-			</div>
-		</span>
+			</span>
+			<button class = "btn btn-success btn-lg end"><b>End Game</b></button>
+		</div>
 	</div>
-	<div class = "col-4 text-light"></div>
+	<div class = "col-sm-3 text-light"></div>
 </div>
 {% endblock %}
 

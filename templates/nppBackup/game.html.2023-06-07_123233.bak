@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% set active_page = "play" %}
+
+{% block title %}page2{% endblock %}
+
+{% block content %}
+<div class = "row centered">
+    <div class = "col-sm-3 text-light"></div>
+    <div class = "col-sm-6"> 
+		<div class = "game">
+			<div class = "bomb-num"></div>
+			{{ game }}
+			<span>
+				<button class = "selector btn"><h1 class = "flag">&#128681;</h1> <!-- flag --></button>
+				<button class = "selector btn"><h1 class = "destroy">&#128163;</h1> <!-- bomb --></button>
+			</span>
+<<<<<<< HEAD
+=======
+			<button class = "btn btn-success btn-lg end"><b>End Game</b></button>
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8
+		</div>
+	</div>
+	<div class = "col-sm-3 text-light"></div>
+</div>
+{% endblock %}
+
+
+
+<!-- <br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+	</span>
+	<br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+	</span>
+	<br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+	</span>
+	<br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+	</span>
+	<br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+	</span>
+	<br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+	</span>
+	<br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+	</span>
+	<br>
+	<span>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block bomb"></button>
+		<button type="button" class="btn btn-lg btn-success text-success block"></button>
+	</span>
+	<br> -->

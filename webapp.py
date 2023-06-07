@@ -4,7 +4,9 @@ from flask_apscheduler import APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_oauthlib.client import OAuth
 from bson.objectid import ObjectId
+from datetime import timedelta
 
+import time
 import random
 import pprint
 import os
@@ -47,9 +49,31 @@ print("connected to db")
 y = 0 #tracking length of layer
 x = 0 #tracking length of bombLayout
 
+game_end = False
+
 layer = []
 
 bombLayout = []
+bombLayout.clear()
+
+flagNum = 0
+
+start_time = 0
+
+@app.route("/game-restart")
+def gameRestart():
+    global flagNum
+    global bombLayout
+    global time
+    global start_time
+    global x
+    global y
+    bombLayout = []
+    x = 0
+    y = 0
+    start_time = 0
+    flagNum = 0
+    return redirect('/game')
 
 def how_many(layers):
     count = 0
@@ -64,6 +88,8 @@ def how_many(layers):
 def generate_bomb_layout():
     global x
     global y
+    global bombLayout
+    
     
     while x < 13:
         while y < 10:
@@ -89,7 +115,6 @@ def generate_bomb_layout():
         x += 1
     return bombLayout
 
-bombLayout = generate_bomb_layout()
 #bombLayout = [[0, 0, 0, -1, 0, 0, -1], 
 #            [-1, 0, -1, 0, 0, 0, 0], 
 #            [-1, 0, 0, -1, 0, 0, 0], 
@@ -97,11 +122,9 @@ bombLayout = generate_bomb_layout()
 #            [-1, 0, 0, -1, 0, 0, 0], 
 #            [-1, 0, 0, 0, -1, 0, 0], 
 #            [0, 0, -1, 0, -1, 0, 0], 
-#            [-1, 0, 0, 0, -1, 0, 0]]
-
-print(bombLayout)     
+#            [-1, 0, 0, 0, -1, 0, 0]]    
             
-numLayout = bombLayout
+bombLayout = []
 
 gameHtml = ""
 
@@ -112,125 +135,230 @@ gameHtml = ""
 def inject_logged_in():
     return {"logged_in":('github_token' in session)}
 
-def create_layout(numLayout):
+def create_layout(bombLayout):
     global gameHtml
-    for x in range(len(numLayout)):
-        if bombLayout[x] == bombLayout[0]:
+    for x in range(len(bombLayout)):
+        if bombLayout[x] == bombLayout.index(bombLayout[0]):
             gameHtml = gameHtml + Markup('<span>\n')
         else:
-            gameHtml = gameHtml + Markup('</span>\n<br>\n<span>')
-        for y in range(len(numLayout[x])):
-            if numLayout[x][y] == -1:
+            gameHtml = gameHtml + Markup('</span>\n<br>\n<span>\n')
+        for y in range(len(bombLayout[x])):
+            if bombLayout[x][y] == -1:
                 gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block bomb"><b>b</b></button>\n')
-            elif numLayout[x][y] == 0:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block">..</button>\n')
+            elif bombLayout[x][y] == 0:
+                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block 0"><b>..</b></button>\n')
             else:
-                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"><b>' + str(numLayout[x][y]) + '</b></button>\n')
+                gameHtml = gameHtml + Markup('<button type="button" class="btn-lg btn-success block"><b>' + str(bombLayout[x][y]) + '</b></button>\n')
                 
-    gameHtml = gameHtml + Markup('</span>\n<br>')
+    gameHtml = gameHtml + Markup('</span>\n<br>\n')
     return gameHtml
     
 def generate_numbers():
-    for x in range(len(numLayout)):
-        for y in range(len(numLayout[x])):
-            if numLayout[x][y] == -1:
-                if numLayout[x] == numLayout[0]:
-                    if (y-1) < len(numLayout[x]):
-                        if numLayout[x][y - 1] != -1: #left of bomb
-                            numLayout[x][y - 1] += 1
+    for x in range(len(bombLayout)):
+        for y in range(len(bombLayout[x])):
+            if bombLayout[x][y] == -1:
+                if bombLayout[x] == bombLayout.index(bombLayout[0]):
+                    if (y-1) < len(bombLayout[x]):
+                        if bombLayout[x][y - 1] != -1: #left of bomb
+                            bombLayout[x][y - 1] += 1
                             
-                    if (y+1) < len(numLayout[x]):
-                        if numLayout[x][y + 1] != -1: #right of bomb
-                            numLayout[x][y + 1] += 1
+                    if (y+1) < len(bombLayout[x]):
+                        if bombLayout[x][y + 1] != -1: #right of bomb
+                            bombLayout[x][y + 1] += 1
                     
-                    if (x+1) < len(numLayout):
-                        if numLayout[x + 1][y] != -1: #directly under bomb
-                            numLayout[x + 1][y] += 1
+                    if (x+1) < len(bombLayout):
+                        if bombLayout[x + 1][y] != -1: #directly under bomb
+                            bombLayout[x + 1][y] += 1
                                         
-                    if (x+1) < len(numLayout) and (y-1) >= 0:
-                        if numLayout[x + 1][y - 1] != -1: #under, left bomb
-                            numLayout[x + 1][y - 1] += 1
+                    if (x+1) < len(bombLayout) and (y-1) >= 0:
+                        if bombLayout[x + 1][y - 1] != -1: #under, left bomb
+                            bombLayout[x + 1][y - 1] += 1
                                         
-                    if (x+1) < len(numLayout) and (y+1) < len(numLayout[x]):    
-                        if numLayout[x + 1][y + 1] != -1: #under, right bomb
-                            numLayout[x + 1][y + 1] += 1
+                    if (x+1) < len(bombLayout) and (y+1) < len(bombLayout[x]):    
+                        if bombLayout[x + 1][y + 1] != -1: #under, right bomb
+                            bombLayout[x + 1][y + 1] += 1
                 #---------------------------------------------------------------------
                 
-                if numLayout[x] == numLayout[7]:
+                if bombLayout[x] == bombLayout.index(bombLayout[7]):
                     if (y-1) >= 0:
-                        if numLayout[x][y - 1] != -1: #left of bomb
-                            numLayout[x][y - 1] += 1
+                        if bombLayout[x][y - 1] != -1: #left of bomb
+                            bombLayout[x][y - 1] += 1
                             
-                    if (y+1) < len(numLayout[x]):
-                        if numLayout[x][y + 1] != -1: #right of bomb
-                            numLayout[x][y + 1] += 1
+                    if (y+1) < len(bombLayout[x]):
+                        if bombLayout[x][y + 1] != -1: #right of bomb
+                            bombLayout[x][y + 1] += 1
                             
-                    if (x-1) < len(numLayout):
-                        if numLayout[x - 1][y] != -1: #directly above bomb
-                                numLayout[x - 1][y] += 1
+                    if (x-1) < len(bombLayout):
+                        if bombLayout[x - 1][y] != -1: #directly above bomb
+                                bombLayout[x - 1][y] += 1
                         
-                    if (x-1) < len(numLayout) and (y-1) >= 0:
-                        if numLayout[x - 1][y - 1] != -1: #above, left bomb
-                            numLayout[x - 1][y - 1] += 1
+                    if (x-1) < len(bombLayout) and (y-1) >= 0:
+                        if bombLayout[x - 1][y - 1] != -1: #above, left bomb
+                            bombLayout[x - 1][y - 1] += 1
                                         
-                    if (x-1) < len(numLayout) and (y+1) < len(numLayout[x]):
-                        if numLayout[x - 1][y + 1] != -1: #above, right bomb
-                            numLayout[x - 1][y + 1] += 1
+                    if (x-1) < len(bombLayout) and (y+1) < len(bombLayout[x]):
+                        if bombLayout[x - 1][y + 1] != -1: #above, right bomb
+                            bombLayout[x - 1][y + 1] += 1
                 #---------------------------------------------------------------------
                 
-                if numLayout[x] != numLayout[0] and numLayout[x] != numLayout[7]:
+                if bombLayout[x] != bombLayout[0] and bombLayout[x] != bombLayout[7]:
                     if (y-1) >= 0:
-                        if numLayout[x][y - 1] != -1: #left of bomb
-                            numLayout[x][y - 1] += 1
+                        if bombLayout[x][y - 1] != -1: #left of bomb
+                            bombLayout[x][y - 1] += 1
                             
-                    if (y+1) < len(numLayout[x]):
-                        if numLayout[x][y + 1] != -1: #right of bomb
-                            numLayout[x][y + 1] += 1
+                    if (y+1) < len(bombLayout[x]):
+                        if bombLayout[x][y + 1] != -1: #right of bomb
+                            bombLayout[x][y + 1] += 1
                         
-                    if (x-1) < len(numLayout):
-                        if numLayout[x - 1][y] != -1: #directly above bomb
-                                numLayout[x - 1][y] += 1
+                    if (x-1) < len(bombLayout):
+                        if bombLayout[x - 1][y] != -1: #directly above bomb
+                                bombLayout[x - 1][y] += 1
                         
-                    if (x-1) < len(numLayout) and (y-1) >= 0:
-                        if numLayout[x - 1][y - 1] != -1: #above, left bomb
-                            numLayout[x - 1][y - 1] += 1
+                    if (x-1) < len(bombLayout) and (y-1) >= 0:
+                        if bombLayout[x - 1][y - 1] != -1: #above, left bomb
+                            bombLayout[x - 1][y - 1] += 1
                                         
-                    if (x-1) < len(numLayout) and (y+1) < len(numLayout[x]):
-                        if numLayout[x - 1][y + 1] != -1: #above, right bomb
-                            numLayout[x - 1][y + 1] += 1
+                    if (x-1) < len(bombLayout) and (y+1) < len(bombLayout[x]):
+                        if bombLayout[x - 1][y + 1] != -1: #above, right bomb
+                            bombLayout[x - 1][y + 1] += 1
                                     
-                    if (x+1) < len(numLayout):
-                        if numLayout[x + 1][y] != -1: #directly under bomb
-                            numLayout[x + 1][y] += 1
+                    if (x+1) < len(bombLayout):
+                        if bombLayout[x + 1][y] != -1: #directly under bomb
+                            bombLayout[x + 1][y] += 1
                                         
-                    if (x+1) < len(numLayout) and (y-1) >= 0:
-                        if numLayout[x + 1][y - 1] != -1: #under, left bomb
-                            numLayout[x + 1][y - 1] += 1
+                    if (x+1) < len(bombLayout) and (y-1) >= 0:
+                        if bombLayout[x + 1][y - 1] != -1: #under, left bomb
+                            bombLayout[x + 1][y - 1] += 1
                                         
-                    if (x+1) < len(numLayout) and (y+1) < len(numLayout[x]):    
-                        if numLayout[x + 1][y + 1] != -1: #under, right bomb
-                            numLayout[x + 1][y + 1] += 1
-    return numLayout
+                    if (x+1) < len(bombLayout) and (y+1) < len(bombLayout[x]):    
+                        if bombLayout[x + 1][y + 1] != -1: #under, right bomb
+                            bombLayout[x + 1][y + 1] += 1
+    return bombLayout
 
 @app.route('/flag')
 def flagHTML():
-    flag = "<h2>&#128681;</h2>"
+    flag = "<h3>&#128681;</h3>"
     return flag
     
 @app.route('/unflag')
 def unflagHTML():
-    unflag = ".."
+    unflag = "<b>..</b>"
     return unflag
     
 @app.route('/bomb')
 def bombHTML():
-    bomb = "<h2>&#128163;</h2>"
+    bomb = "<h3>&#128163;</h3>"
     return bomb
+    
+@app.route('/unflag_bomb')
+def unflagBombHTML():
+    unflag = "<b>b</b>"
+    return unflag
 
 @app.route('/')
 def home():
     #print(generate_numbers())
     return render_template('home.html')
+    
+@app.route('/game_end_lose')
+def gameEndLose():
+    global start_time
+    global game_end
+    global time
+    game_end = True
+    end_time = time.time()
+    timer = round(end_time - start_time)
+    time_taken = str(timedelta(seconds=timer))
+    if 'user_data' in session:
+        user = session['user_data']['login']
+            
+        for doc in collection.find({"User": user}):
+            btime = doc["Best Time"]
+            time_sec = doc["Best Time Seconds"]
+            loses = doc["Loses"]
+                
+        collection.update_one({"User":user}, {"$set": {"Loses": loses + 1}})
+        
+        end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(time_taken)+'</h3>\n<h3>Best Time: '+btime+'</h3>\n<form action = "/game-restart">\n<button class = "btn btn-success btn-lg end"><b>Play Again</b></button>\n</form></div>'
+    else:   
+        end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(time_taken)+'</h3>\n<form action = "/game-restart">\n<button class = "btn btn-success btn-lg end"><b>Play Again</b></button>\n</form></div>'
+        
+    return end
+    
+@app.route('/game_end_win')
+def gameEndWin():
+    global game_end
+    global start_time
+    global flagNum
+    game_end = True
+    end_time = time.time()
+    timer = round(end_time - start_time)
+    time_taken = str(timedelta(seconds=timer))
+    
+    if flagNum == 0:
+        if 'user_data' in session:
+            user = session['user_data']['login']
+            
+            for doc in collection.find({"User": user}):
+                btime = doc["Best Time"]
+                time_sec = doc["Best Time Seconds"]
+                wins = doc["Wins"]
+            
+            collection.update_one({"User":user},{"$set": {"Wins": wins + 1}})
+        
+            if time_sec > timer:
+                collection.update_one({"User":user}, {"$set": {"Best Time": time_taken}})
+                end = '<div>\n<h2> You Win! </h2>\n<h3>Time Taken: '+str(time_taken)+'</h3>\n<h4>New Best Time!</h4>\n<form action = "/game-restart">\n<button class = "btn btn-success btn-lg end"><b>Play Again</b></button>\n</form></div>'
+            else:
+                end = '<div>\n<h2> You Win! </h2>\n<h3>Time Taken: '+str(time_taken)+'</h3>\n<h3>Best Time: '+btime+'</h3>\n<form action = "/game-restart">\n<button class = "btn btn-success btn-lg end"><b>Play Again</b></button>\n</form></div>'
+        else:
+            end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(time_taken)+'</h3>\n<form action = "/game-restart">\n<button class = "btn btn-success btn-lg end"><b>Play Again</b></button>\n</form></div>'
+    else: 
+        if 'user_data' in session:
+            user = session['user_data']['login']
+            
+            for doc in collection.find({"User": user}):
+                btime = doc["Best Time"]
+                time_sec = doc["Best Time Seconds"]
+                loses = doc["Loses"]
+                
+            collection.update_one({"User":user}, {"$set": {"Loses": loses + 1}})
+        
+            end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(time_taken)+'</h3>\n<h3>Best Time: '+btime+'</h3>\n<form action = "/game-restart">\n<button class = "btn btn-success btn-lg end"><b>Play Again</b></button>\n</form></div>'
+        else:
+            end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(time_taken)+'</h3>\n<form action = "/game-restart">\n<button class = "btn btn-success btn-lg end"><b>Play Again</b></button>\n</form></div>'
+    return end
+    
+@app.route('/continue')
+def continued():
+    continued = "Continue to End Screen"
+    return continued
+
+@app.route("/bomb_num", methods = ['GET', 'POST'])
+def bombNum():
+    global flagNum
+    flagNum = 0
+    if flagNum == 0:
+        for x in range(len(bombLayout)):
+            for y in range(len(bombLayout[x])):
+                if bombLayout[x][y] == -1:
+                    flagNum += 1
+        returned = "<b>Flags Left: " + str(flagNum) + " &#128681;</b>"
+    return returned
+ 
+@app.route('/minus_flag')
+def minusFlag():
+    global flagNum
+    flagNum -= 1
+    returned = "<b>Flags Left: " + str(flagNum) + " &#128681;</b>"
+    return returned
+    
+@app.route('/plus_flag')
+def plusFlag():
+    global flagNum
+    flagNum += 1
+    returned = "<b>Flags Left: " + str(flagNum) + " &#128681;</b>"
+    return returned
 
 #redirect to GitHub's OAuth page and confirm callback URL
 @app.route('/login')
@@ -258,7 +386,7 @@ def authorized():
             #pprint.pprint(vars(github['api/2/accounts/profile/']))
             mydoc = collection.find_one({'User': user})
             if mydoc == None:
-                doc = {"User": user, "Best Time": "100:00:00", "Wins": 0, "Loses": 0, "Achievements": ['Signed Up!']}
+                doc = {"User": user, "Best Time": "100:00:00", "Best Time Seconds": 1000000000, "Wins": 0, "Loses": 0, "Achievements": ['Signed Up!']}
                 collection.insert_one(doc)
             else:
                 print('user already signed up')
@@ -288,16 +416,16 @@ def renderProfile():
 @app.route('/game')
 def renderGame():
     global gameHtml
-    if gameHtml == "":
-        numLayout = generate_numbers()
-        gameLayout = create_layout(numLayout)
-        #print(numLayout)
-    else:
-        gameHtml = ""
-        numLayout = bombLayout
-        gameLayout = create_layout(numLayout)
-        #print(numLayout)
-    return render_template('game.html', game = gameLayout)
+    global bombLayout
+    global start_time
+    
+    start_time = time.time()
+    
+    gameHtml = ""
+    bombLayout = generate_bomb_layout()
+    bombLayout = generate_numbers()
+    gameHtml = create_layout(bombLayout)
+    return render_template('game.html', game = gameHtml)
 
 #the tokengetter is automatically called to check who is logged in.
 @github.tokengetter

@@ -1,15 +1,20 @@
 $(document).ready(function() {
 	
 	var checked = false;
-	
+	var game_end = false;
+
+	$(".bomb-num").load("bomb_num");
+	var flagNum = $(".bomb-num").load("bomb_num");
+	//var flagNum = 0
+
 	$(".block").click(function() {
 		if ($('button').hasClass('check')){
 			checked = true;
 		} else {
 			checked = false;
 		}
-		
-		
+
+
 		if (checked == false) {
 			$(this).addClass("check");
 			$(this).removeClass("block");
@@ -19,58 +24,88 @@ $(document).ready(function() {
 			$(this).addClass("block");
 		}
 	});
-	
+
 	$(".flag").click(function() {
 		if ($('button').hasClass('check') && $('.check').hasClass('flagged')) {
-			$('.check').load('unflag')
 			$('.check').addClass("block");
 
-			if ($(".check").hasClass("bomb")) {
+			if ($(".check").hasClass("bomb-f")) {
 				$('.check').removeClass("flagged-right");
+				$('.check').addClass('bomb')
+				$('.check').load('unflag_bomb')
 			}
 			else {
 				$('.check').removeClass("flagged-wrong");
+				$('.check').load('unflag')
 			}
-			
+
 			$('.check').removeClass("flagged");
 			$('.check').removeClass("check");
+			$(".bomb-num").load("plus_flag");
 			checked = false;
 		}
 		else if ($('button').hasClass('check')) {
 			$('.check').load('flag')
-			$('.check').addClass("block");
 			$('.check').addClass("flagged");
-			
+			$('.check').addClass("block");
+
 			if ($(".check").hasClass("bomb")) {
 				$('.check').addClass("flagged-right");
+				$('.check').addClass("bomb-f");
+				$('.check').removeClass('bomb')
 			}
 			else {
 				$('.check').addClass("flagged-wrong");
 			}
-			
+			$(".bomb-num").load("minus_flag");
 			$('.check').removeClass("check");
 			checked = false;
 		}
 	});
-	
+
 	$(".destroy").click(function(){
 		if ($('button').hasClass('check') && $(".check").hasClass("bomb")) {
-			$('.bomb').load('bomb')
+			$('.bomb').load('bomb');
 			$(".bomb").removeClass("check");
 			$('.bomb').addClass('exploded');
-			if ($('.bomb').hasClass('flagged-right')) {
-				$(".flagged-right").load('flag')
-				$(".flagged-right").addClass("correct");
-			}	
-			if ($(".block").hasClass("flagged-wrong")) {
-				$(".flagged-wrong").load('flag')
-				$(".flagged-wrong").addClass("wrong");
-			}
+			$(".flagged-right").load('flag')
+			$(".flagged-right").addClass("correct");
+			$(".flagged-wrong").load('flag')
+			$(".flagged-wrong").addClass("wrong");
+			$('.end').addClass('continue')
+			$('.continue').load('continue')
+			
+			$('.continue').click(function() {
+				$('.game').load('game_end_lose')
+			});
+		}
+		else if ($('button').hasClass('check') && $(".check").hasClass("0")) {
+			$('.0').addClass("destroyed-0");
+			$('.check').removeClass("check");
+			checked = false;
 		}
 		else if ($('button').hasClass('check')) {
 			$('.check').addClass("destroyed");
 			$('.check').removeClass("check");
 			checked = false;
-		} 
+		}
+	});
+	
+	$(".end").click(function() {
+		$(".flagged-right").addClass("correct");
+		$('.bomb').load('bomb');
+		$('.bomb').addClass('exploded');
+		$(".flagged-wrong").addClass("wrong");
+		$('.end').addClass('continue')
+		$('.continue').load('continue')
+		
+		$('.continue').click(function() {
+			if ($('.block').hasClass('bomb')) {
+				$('.game').load('game_end_lose')
+			}
+			else {
+				$('.game').load('game_end_win')
+			}
+		});
 	});
 });
