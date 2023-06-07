@@ -68,17 +68,16 @@ $(document).ready(function() {
 			$('.bomb').load('bomb');
 			$(".bomb").removeClass("check");
 			$('.bomb').addClass('exploded');
-			if ($('.bomb').hasClass('flagged-right')) {
-				$(".flagged-right").load('flag')
-				$(".flagged-right").addClass("correct");
-			}	
-			if ($(".block").hasClass("flagged-wrong")) {
-				$(".flagged-wrong").load('flag')
-				$(".flagged-wrong").addClass("wrong");
-			}
-			setTimeout(function(){
+			$(".flagged-right").load('flag')
+			$(".flagged-right").addClass("correct");
+			$(".flagged-wrong").load('flag')
+			$(".flagged-wrong").addClass("wrong");
+			$('.end').addClass('continue')
+			$('.continue').load('continue')
+			
+			$('.continue').click(function() {
 				$('.game').load('game_end_lose')
-			}, 1000);
+			});
 		}
 		else if ($('button').hasClass('check') && $(".check").hasClass("0")) {
 			$('.0').addClass("destroyed-0");

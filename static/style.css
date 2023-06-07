@@ -23,7 +23,7 @@ span {
 	height: 55px;
 	padding: 0px;
 	color: #198754;
-	/*background-color: #198754;*/
+	background-color: #198754;
 	border-color: #198754;
 	border-radius: 8px;
 }
@@ -39,7 +39,7 @@ span {
 }
 
 .destroyed:hover {
-	color: #cfc4ab;
+	color: black;
 	background-color: #cfc4ab;
 }
 
