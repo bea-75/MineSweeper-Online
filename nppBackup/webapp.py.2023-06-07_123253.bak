@@ -254,11 +254,16 @@ def home():
     
 @app.route('/game_end_lose')
 def gameEndLose():
+<<<<<<< HEAD
+    global game_end
+    game_end = True
+=======
     global start_time
     global game_end
     game_end = True
     end_time = time.time()
     time = end_time - start_time
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8
     if 'user_data' in session:
         user = session['user_data']['login']
         collection.update_one({"User":user},
@@ -267,16 +272,46 @@ def gameEndLose():
                 {"Loses": "Loses" + 1}
             }
         })
+<<<<<<< HEAD
+    
+    time = "00.00.00"
+    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
+=======
         
     timed = round(time)
         
     #end = '<div>\n<h2> Game Over! </h2>\n<h3>Time Taken: '+str(round(time))+'</h3>\n</div>'
     end = "Wee"
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8
     return end
     
 @app.route('/game_end_win')
 def gameEndWin():
     global game_end
+<<<<<<< HEAD
+    game_end = True
+    if 'user_data' in session:
+        user = session['user_data']['login']
+        collection.update_one({"User":user},
+        {
+            "$set": {
+                {"Wins": "Wins" + 1}
+            }
+        })
+    
+    time = "00.00.00"
+    end = '<div>\n<h2> Game Over! </h2>\n<h3>'+time+'</h3>\n</div>'
+    return end
+    
+@app.route("/bomb_num")
+def bombNum():
+    count = 0
+    for x in range(len(numLayout)):
+        for y in range(len(numLayout[x])):
+            if numLayout[x][y] == -1:
+                count += 1
+    returned = "<b>Flags Left: " + str(count) + "</b>"
+=======
     global start_time
     game_end = True
     end_time = time.time()
@@ -333,6 +368,7 @@ def plusFlag():
     global flagNum
     flagNum += 1
     returned = "<b>Flags Left: " + str(flagNum) + " &#128681;</b>"
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8
     return returned
 
 #redirect to GitHub's OAuth page and confirm callback URL
@@ -393,7 +429,10 @@ def renderGame():
     global gameHtml
     global bombLayout
     global numLayout
+<<<<<<< HEAD
+=======
     global start_time
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8
     
     start_time = time.time()
     

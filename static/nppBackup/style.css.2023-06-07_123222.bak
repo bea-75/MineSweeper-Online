@@ -125,7 +125,10 @@ span {
 	font-size: 20px;
 	color: white;
 }
+<<<<<<< HEAD
+=======
 
 .game{
 	color: white;
 }
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8

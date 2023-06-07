@@ -2,11 +2,17 @@ $(document).ready(function() {
 	
 	var checked = false;
 	var game_end = false;
+<<<<<<< HEAD
+	
+	$(".bomb-num").load("bomb_num")
+	
+=======
 
 	$(".bomb-num").load("bomb_num");
 	var flagNum = $(".bomb-num").load("bomb_num");
 	//var flagNum = 0
 
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8
 	$(".block").click(function() {
 		if ($('button').hasClass('check')){
 			checked = true;

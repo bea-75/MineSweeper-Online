@@ -15,7 +15,10 @@
 				<button class = "selector btn"><h1 class = "flag">&#128681;</h1> <!-- flag --></button>
 				<button class = "selector btn"><h1 class = "destroy">&#128163;</h1> <!-- bomb --></button>
 			</span>
+<<<<<<< HEAD
+=======
 			<button class = "btn btn-success btn-lg end"><b>End Game</b></button>
+>>>>>>> de0acf559369c6bc9c9f671cd55754b6b6bc30c8
 		</div>
 	</div>
 	<div class = "col-sm-3 text-light"></div>
