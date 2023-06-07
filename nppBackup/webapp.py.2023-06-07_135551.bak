@@ -66,11 +66,7 @@ def gameRestart():
     global bombLayout
     global time
     global start_time
-    global x
-    global y
     bombLayout = []
-    x = 0
-    y = 0
     start_time = 0
     flagNum = 0
     return redirect('/game')

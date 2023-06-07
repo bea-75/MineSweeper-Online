@@ -38,7 +38,7 @@
       {% endif %}
     {% endwith %}
 
-    <div id="content" class = "add">
+    <div id="content"  class = "add">
       {% block content %}{% endblock %}
     </div>
 

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% set active_page = "home" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+	<h1>Home</h1>
+	<form action = "/game-restart">
+		<button type="submit" class="btn btn-success btn-lg">Play Now!</button>
+	</form>
+
+{% endblock %}

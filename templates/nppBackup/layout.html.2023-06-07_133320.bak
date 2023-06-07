@@ -19,7 +19,7 @@
 
 
   </head>
-  <body  class = "play">
+  <body {% if active_page == "play" %} class = "play" {% endif %}>
     {% include 'navbar.html' %}
     
     {% with messages = get_flashed_messages(with_categories=true) %} 

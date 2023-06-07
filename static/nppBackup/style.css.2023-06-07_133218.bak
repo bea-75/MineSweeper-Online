@@ -108,7 +108,6 @@ span {
 
 .play {
 	background-color: #44ad45;
-	color: white;
 }
 
 .selector {

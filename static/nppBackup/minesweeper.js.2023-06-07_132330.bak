@@ -32,7 +32,7 @@ $(document).ready(function() {
 			if ($(".check").hasClass("bomb-f")) {
 				$('.check').removeClass("flagged-right");
 				$('.check').addClass('bomb')
-				$('.check').load('unflag_bomb')
+				$('.check').load('unflag-bomb')
 			}
 			else {
 				$('.check').removeClass("flagged-wrong");
@@ -47,7 +47,6 @@ $(document).ready(function() {
 		else if ($('button').hasClass('check')) {
 			$('.check').load('flag')
 			$('.check').addClass("flagged");
-			$('.check').addClass("block");
 
 			if ($(".check").hasClass("bomb")) {
 				$('.check').addClass("flagged-right");
@@ -56,6 +55,7 @@ $(document).ready(function() {
 			}
 			else {
 				$('.check').addClass("flagged-wrong");
+				$('.check').addClass("block");
 			}
 			$(".bomb-num").load("minus_flag");
 			$('.check').removeClass("check");

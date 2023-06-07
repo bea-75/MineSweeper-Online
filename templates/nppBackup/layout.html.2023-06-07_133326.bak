@@ -19,7 +19,7 @@
 
 
   </head>
-  <body  class = "play">
+  <body  class = "add">
     {% include 'navbar.html' %}
     
     {% with messages = get_flashed_messages(with_categories=true) %} 
@@ -38,7 +38,7 @@
       {% endif %}
     {% endwith %}
 
-    <div id="content" class = "add">
+    <div id="content">
       {% block content %}{% endblock %}
     </div>
 
